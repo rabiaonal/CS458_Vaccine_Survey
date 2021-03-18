@@ -79,10 +79,12 @@ class _HomePageState extends State<HomePage> {
               Row(
               children: [
                 Text("Date of Birth: " + date),
+
                 Flexible(child:
                     ElevatedButton(
                     onPressed: () => _selectDate(context),
                       child: Text( 'Select date' ),
+
                 )
                 )
               ]
@@ -170,14 +172,22 @@ class _HomePageState extends State<HomePage> {
 
             ElevatedButton(
               onPressed: () {
-                if (date != "" && _formKey.currentState.validate()) {
+                if(date.isEmpty)
+                {
                   ScaffoldMessenger
                       .of(context)
-                      .showSnackBar(SnackBar(content: Text('Survey Saved, Thank You!')));
-                  _formKey.currentState.reset();
-                  setState(() {
-                    date="";
-                  });
+                      .showSnackBar(SnackBar(content: Text('Invalid Date! Please enter a valid date')));
+                }
+
+                if (_formKey.currentState.validate() && date.isNotEmpty) {
+                    ScaffoldMessenger
+                        .of(context)
+                        .showSnackBar(SnackBar(content: Text('Survey Saved, Thank You!')));
+                    _formKey.currentState.reset();
+                    setState(() {
+                      date="";
+                      selectedDate = DateTime.now();
+                    });
                 }
               },
               child: Text('Submit'),
