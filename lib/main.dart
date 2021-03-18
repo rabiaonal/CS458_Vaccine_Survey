@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:date_field/date_field.dart';
 import 'package:intl/intl.dart';
 
 void main() => runApp(App());
@@ -28,7 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
-  String dropdownValue = 'One', cityDDvalue = "Istanbul", genderDDvalue = "Male", vaccineDDvalue = "Biontech";
+  String cityDDvalue = "Istanbul", genderDDvalue = "Male", vaccineDDvalue = "Biontech";
   DateTime selectedDate = DateTime.now();
   String date ="";
 
@@ -37,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     _selectDate(BuildContext context) async {
       final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate, // Refer step 1
+        initialDate: selectedDate,
         firstDate: DateTime(1900),
         lastDate: DateTime.now(),
       );
@@ -82,13 +80,9 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text("Date of Birth: " + date),
                 Flexible(child:
-/*                DateTimeFormField(
-                  firstDate: new DateTime(1900),
-                  lastDate: new DateTime.now(),
-                  )*/
                     ElevatedButton(
-                    onPressed: () => _selectDate(context), // Refer step 3
-                      child: Text( 'Select date', style: TextStyle(color: Colors.black)),
+                    onPressed: () => _selectDate(context),
+                      child: Text( 'Select date' ),
                 )
                 )
               ]
@@ -176,20 +170,18 @@ class _HomePageState extends State<HomePage> {
 
             ElevatedButton(
               onPressed: () {
-                // Validate returns true if the form is valid, otherwise false.
-                if (_formKey.currentState.validate()) {
-                  // If the form is valid, display a snackbar. In the real world,
-                  // you'd often call a server or save the information in a database.
-
+                if (date != "" && _formKey.currentState.validate()) {
                   ScaffoldMessenger
                       .of(context)
                       .showSnackBar(SnackBar(content: Text('Survey Saved, Thank You!')));
                   _formKey.currentState.reset();
+                  setState(() {
+                    date="";
+                  });
                 }
               },
               child: Text('Submit'),
             )
-
           ]
       ),
 
