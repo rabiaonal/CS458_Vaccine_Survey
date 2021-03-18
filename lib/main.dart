@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                       TextFormField(
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'This field cannot be empty';
+                            return 'Please enter your name';
                           }
                           if (!value.trim().contains(' ')) {
                             return 'Please enter your full name';
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                     maxLength: 200,
                     validator: (value) {
                       if (value.isEmpty) {
-                        return 'This field cannot be empty';
+                        return 'Please enter the side effects you have faced';
                       }
                     },
                   )
