@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:date_field/date_field.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(App());
 
@@ -27,48 +29,67 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _formKey = GlobalKey<FormState>();
   String dropdownValue = 'One', cityDDvalue = "Istanbul", genderDDvalue = "Male", vaccineDDvalue = "Biontech";
+  DateTime selectedDate = DateTime.now();
+  String date ="";
 
   @override
   Widget build(BuildContext context) {
+    _selectDate(BuildContext context) async {
+      final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate, // Refer step 1
+        firstDate: DateTime(1900),
+        lastDate: DateTime.now(),
+      );
+      if (picked != null && picked != selectedDate)
+        setState(() {
+          selectedDate = picked;
+          DateFormat formatter = DateFormat('dd/MM/yyyy');
+          date = formatter.format(picked).toString();
+        });
+    }
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Vaccine Survey'),
-      ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text("Full Name "),
-                Flexible(
+        appBar: AppBar(
+          title: Text('Vaccine Survey'),
+        ),
+        body: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text("Full Name "),
+                  Flexible(
                     child:
                       TextFormField(
-                          validator: (value) {
-                        if (value.isEmpty) {
-                          return 'This field cannot be empty';
-                        }
-                        if (!value.trim().contains(' ')) {
-                          return 'Please enter your full name';
-                        }
-                        for(int i = 0; i < value.trim().length;i++){
-                          if(!value[i].contains(RegExp("[a-zA-Z ]")))
-                            return "Please enter only letters";
-                        }
-                        return "";
-                      },
-                    )
-                ),
-              ]
-            ),
-            Row(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'This field cannot be empty';
+                          }
+                          if (!value.trim().contains(' ')) {
+                            return 'Please enter your full name';
+                          }
+                          for(int i = 0; i < value.trim().length;i++){
+                            if(!value[i].contains(RegExp("[a-zA-Z ]")))
+                              return "Please enter only letters";
+                          }
+                        },
+                      )
+                  ),
+                ]
+              ),
+              Row(
               children: [
-                Text("Date of Birth "),
+                Text("Date of Birth: " + date),
                 Flexible(child:
-                  InputDatePickerFormField(
-                      firstDate: new DateTime(1900),
-                      lastDate: new DateTime.now()
-                  )
+/*                DateTimeFormField(
+                  firstDate: new DateTime(1900),
+                  lastDate: new DateTime.now(),
+                  )*/
+                    ElevatedButton(
+                    onPressed: () => _selectDate(context), // Refer step 3
+                      child: Text( 'Select date', style: TextStyle(color: Colors.black)),
+                )
                 )
               ]
             ),
@@ -93,36 +114,33 @@ class _HomePageState extends State<HomePage> {
                               );
                             }).toList(),
                           )
-    )
+                    )
               ]
             ),
             Row(
                 children: [
                   Text("Gender "),
-    Flexible(child:
-    DropdownButton<String>(
-                    value: genderDDvalue,
-                    onChanged: ( newValue) {
-                      setState(() {
-                        genderDDvalue = newValue;
-                      });
-                    },
-                    items: <String>['Male', 'Female']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                  Flexible(
+                      child:
+                        DropdownButton<String>(
+                          value: genderDDvalue,
+                          onChanged: ( newValue) {
+                            setState(() {
+                              genderDDvalue = newValue;
+                            });
+                           },
+                          items: <String>['Male', 'Female'].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>( value: value, child: Text(value) );
+                            }).toList(),
+                          )
                   )
-    )
                 ]
             ),
             Row(
                 children: [
                   Text("Vaccine "),
-    Flexible(child:
-    DropdownButton<String>(
+                     Flexible(child:
+                      DropdownButton<String>(
                     value: vaccineDDvalue,
                     onChanged: ( newValue) {
                       setState(() {
@@ -137,14 +155,14 @@ class _HomePageState extends State<HomePage> {
                       );
                     }).toList(),
                   )
-    )
+                )
                 ]
             ),
             Row(
                 children: [
                   Text("Side Effects "),
-    Flexible(child:
-    TextFormField(
+                  Flexible(child:
+                  TextFormField(
                     maxLength: 200,
                     validator: (value) {
                       if (value.isEmpty) {
@@ -152,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                       }
                     },
                   )
-    )
+                  )
                 ]
             ),
 
@@ -165,7 +183,8 @@ class _HomePageState extends State<HomePage> {
 
                   ScaffoldMessenger
                       .of(context)
-                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                      .showSnackBar(SnackBar(content: Text('Survey Saved, Thank You!')));
+                  _formKey.currentState.reset();
                 }
               },
               child: Text('Submit'),
