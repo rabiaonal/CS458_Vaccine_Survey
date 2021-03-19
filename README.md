@@ -1,16 +1,17 @@
 # vaccine_survey
 
-A new Flutter project.
+A Vaccine Survey Page developed with Flutter framework.
 
-## Getting Started
+# test implementation
 
-This project is a starting point for a Flutter application.
+Test implementation developed in Nodejs. To test a flutter application, Appium requires to use appium-flutter-driver api.
 
-A few resources to get you started if this is your first Flutter project:
+    npm install appium-flutter-driver
+    npm install webdriverio
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+To run test script, move to the directory "/test". Run Test.js with the command "node Test.js platform device". platform(android, ios), device(smartphone, tablet):
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    node Test.js android smartphone
+    node Test.js android tablet
+    node Test.js ios smartphone
+    node Test.js ios tablet

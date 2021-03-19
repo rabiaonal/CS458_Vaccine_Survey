@@ -3,11 +3,12 @@ const assert = require('assert');
 const { byValueKey } = require('appium-flutter-finder');
 const { byText } = require('appium-flutter-finder');
 
-const platform = 'android'
+const platform = process.argv[2]
+const device = process.argv[3]
 const osSpecificOps = platform === 'android' ? 
 {
     platformName: 'Android',
-    deviceName: 'Android Emulator',
+    deviceName: device === 'smartphone' ? 'Android Emulator' : 'Android Tablet Emulator',
     appPackage: 'com.example.vaccine_survey',
     appActivity: 'MainActivity'
 }
