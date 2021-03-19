@@ -1,0 +1,12 @@
+{
+    "name": "vaccine_survey_test",
+    "version": "1.0.0",
+    "description": "",
+    "main": "Test.js",
+    "dependencies": 
+    {
+      "appium-flutter-finder": "0.0.13",
+      "webdriverio": "^5.15.0"
+    },
+    "private": true
+  }

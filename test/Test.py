@@ -32,7 +32,8 @@ submit_result_xpath = '//android.view.View[@content-desc="{message}"]'
 
 def name_input_check():
     driver.find_element_by_xpath(name_input_xpath).click()
-    driver.find_element_by_xpath(name_input_xpath).send_keys("")
+
+    (Mo)driver.find_element_by_xpath(name_input_xpath)
     driver.find_element_by_xpath(submit_button_xpath).click()
     print(driver.find_element_by_xpath(name_error_xpath.format(message="Please enter your name")).is_displayed())
 
